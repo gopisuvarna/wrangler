@@ -21,6 +21,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.annotation.Annotation;
 
 /**
  * A interface defining the usage for the directive.
@@ -30,4 +31,28 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface  Usage {
   String value() default "";
+  // Removed builder method as annotations cannot have methods returning custom types.
+
+  class Builder {
+    private String value;
+
+    public Builder setValue(String value) {
+      this.value = value;
+      return this;
+    }
+
+    public Usage build() {
+      return new Usage() {
+        @Override
+        public String value() {
+          return value;
+        }
+
+        @Override
+        public Class<? extends Annotation> annotationType() {
+          return Usage.class;
+        }
+      };
+    }
+  }
 }

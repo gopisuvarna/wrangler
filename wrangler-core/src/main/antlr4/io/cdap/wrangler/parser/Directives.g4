@@ -311,3 +311,20 @@ fragment Int
 fragment Digit
  : [0-9]
  ;
+
+// Add under other fragment rules:
+fragment BYTE_UNIT: [Bb]|[Kk][Bb]|[Mm][Bb]|[Gg][Bb]|[Tt][Bb];
+fragment TIME_UNIT: [Nn][Ss]|[Mm][Ss]|[Ss]|[Mm]|[Hh]|[Dd];
+
+// Add lexer rules:
+BYTE_SIZE: Number BYTE_UNIT;
+TIME_DURATION: Number TIME_UNIT;
+
+// Add parser rules:
+byteSizeArg: BYTE_SIZE;
+timeDurationArg: TIME_DURATION;
+NULL : 'null';
+// Update value rule:
+Value: 
+    String | Number | Bool | NULL| 
+    BYTE_SIZE | TIME_DURATION;
